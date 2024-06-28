@@ -87,22 +87,22 @@
     </div>
 
     <div class="container">
-        <button onclick="copyToClipboard('B3,day,101\nb3,morning,101')">Morning</button>
-        <button onclick="copyToClipboard('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，早安吉祥！\n\n天利，向各位大人請安！')">Greetings</button>
-        <button onclick="copyToClipboard('謝大人！')">謝大人！</button>
-        <button onclick="copyToClipboard('B7, morning, 101\nB3, noon, 101')">B7 Morning / B3 Noon</button>
-        <button onclick="copyToClipboard('B3,work,101\nBo,scout,101\nBo,heading out,101')">B3 Work / Bo Scout / Bo Heading Out</button>
-        <button onclick="copyToClipboard('B7,work,101')">B7 Work</button>
-        <button onclick="copyToClipboard('Bo,home,101')">Bo Home</button>
-        <button onclick="copyToClipboard('b3,3m prep,101')">B3 3M Prep</button>
-        <button onclick="copyToClipboard('b7,3m prep,101')">B7 3M Prep</button>
-        <button onclick="copyToClipboard('b3,shower,101')">B3 Shower</button>
-        <button onclick="copyToClipboard('b7,shower,101')">B7 Shower</button>
-        <button onclick="copyToClipboard('b3,dinner,101')">B3 Dinner</button>
-        <button onclick="copyToClipboard('b7,dinner,101')">B7 Dinner</button>
-        <button onclick="copyToClipboard('B7, noon, 101\nB3, evening, 101')">B7 Noon / B3 Evening</button>
-        <button onclick="copyToClipboard('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，晚安萬福！')">晚安萬福</button>
-        <button onclick="copyToClipboard('B7, evening, 101\nB7, day, 101')">B7 Evening / B7 Day</button>
+        <button onclick="addMessageToCombined('B3,day,101\nb3,morning,101')">Morning</button>
+        <button onclick="addMessageToCombined('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，早安吉祥！\n\n天利，向各位大人請安！')">Greetings</button>
+        <button onclick="addMessageToCombined('謝大人！')">謝大人！</button>
+        <button onclick="addMessageToCombined('B7, morning, 101\nB3, noon, 101')">B7 Morning / B3 Noon</button>
+        <button onclick="addMessageToCombined('B3,work,101\nBo,scout,101\nBo,heading out,101')">B3 Work / Bo Scout / Bo Heading Out</button>
+        <button onclick="addMessageToCombined('B7,work,101')">B7 Work</button>
+        <button onclick="addMessageToCombined('Bo,home,101')">Bo Home</button>
+        <button onclick="addMessageToCombined('b3,3m prep,101')">B3 3M Prep</button>
+        <button onclick="addMessageToCombined('b7,3m prep,101')">B7 3M Prep</button>
+        <button onclick="addMessageToCombined('b3,shower,101')">B3 Shower</button>
+        <button onclick="addMessageToCombined('b7,shower,101')">B7 Shower</button>
+        <button onclick="addMessageToCombined('b3,dinner,101')">B3 Dinner</button>
+        <button onclick="addMessageToCombined('b7,dinner,101')">B7 Dinner</button>
+        <button onclick="addMessageToCombined('B7, noon, 101\nB3, evening, 101')">B7 Noon / B3 Evening</button>
+        <button onclick="addMessageToCombined('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，晚安萬福！')">晚安萬福</button>
+        <button onclick="addMessageToCombined('B7, evening, 101\nB7, day, 101')">B7 Evening / B7 Day</button>
     </div>
 
     <script>
@@ -118,6 +118,10 @@
         function customClipboard(type) {
             const input = document.getElementById('custom-input').value;
             const message = `${type},${input},101`;
+            addMessageToCombined(message);
+        }
+
+        function addMessageToCombined(message) {
             const combinedMessages = document.getElementById('combined-messages');
             combinedMessages.value += message + '\n';
         }
@@ -141,5 +145,4 @@
     </script>
 </body>
 </html>
-
 
