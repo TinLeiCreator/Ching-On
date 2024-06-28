@@ -15,7 +15,7 @@
             text-align: center;
             color: #333;
         }
-        .container, .custom-container {
+        .container, .custom-container, .button-group {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -26,6 +26,9 @@
             align-items: center;
             margin-bottom: 20px;
         }
+        .button-group {
+            align-items: center;
+        }
         button {
             padding: 15px 25px;
             font-size: 16px;
@@ -35,7 +38,7 @@
             color: white;
             cursor: pointer;
             transition: background-color 0.3s;
-            flex: 1 1 calc(50% - 20px);
+            flex: 1 1 auto;
             max-width: 200px;
             margin: 5px; /* Added margin to create space between buttons */
         }
@@ -43,6 +46,28 @@
             background-color: #45a049;
         }
         button:active {
+            background-color: #36732e;
+        }
+        .share-button {
+            padding: 10px;
+            font-size: 12px;
+            border: none;
+            border-radius: 50%;
+            background-color: #4CAF50; /* Soft green */
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 40px;
+            height: 40px;
+            margin: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .share-button:hover {
+            background-color: #45a049;
+        }
+        .share-button:active {
             background-color: #36732e;
         }
         input, textarea {
@@ -59,9 +84,12 @@
             height: 100px;
         }
         @media (max-width: 600px) {
-            button {
+            button, .share-button {
                 flex: 1 1 100%;
                 max-width: none;
+            }
+            .button-group {
+                justify-content: space-between;
             }
         }
     </style>
@@ -89,22 +117,70 @@
     </div>
 
     <div class="container">
-        <button onclick="addAndCopyMessage('B3,day,101\nb3,morning,101')">Morning</button>
-        <button onclick="addAndCopyMessage('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，早安吉祥！\n\n天利，向各位大人請安!')">Greetings</button>
-        <button onclick="addAndCopyMessage('謝大人!')">謝大人！</button>
-        <button onclick="addAndCopyMessage('B7, morning, 101\nB3, noon, 101')">B7 Morning / B3 Noon</button>
-        <button onclick="addAndCopyMessage('B3,work,101\nBo,scout,101\nBo,heading out,101')">B3 Work / Bo Scout / Bo Heading Out</button>
-        <button onclick="addAndCopyMessage('B7,work,101')">B7 Work</button>
-        <button onclick="addAndCopyMessage('Bo,home,101')">Bo Home</button>
-        <button onclick="addAndCopyMessage('b3,3m prep,101')">B3 3M Prep</button>
-        <button onclick="addAndCopyMessage('b7,3m prep,101')">B7 3M Prep</button>
-        <button onclick="addAndCopyMessage('b3,shower,101')">B3 Shower</button>
-        <button onclick="addAndCopyMessage('b7,shower,101')">B7 Shower</button>
-        <button onclick="addAndCopyMessage('b3,dinner,101')">B3 Dinner</button>
-        <button onclick="addAndCopyMessage('b7,dinner,101')">B7 Dinner</button>
-        <button onclick="addAndCopyMessage('B7, noon, 101\nB3, evening, 101')">B7 Noon / B3 Evening</button>
-        <button onclick="addAndCopyMessage('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，晚安萬福!')">晚安萬福</button>
-        <button onclick="addAndCopyMessage('B7, evening, 101\nB7, day, 101')">B7 Evening / B7 Day</button>
+        <div class="button-group">
+            <button onclick="addAndCopyMessage('B3,day,101\nb3,morning,101')">Morning</button>
+            <button class="share-button" onclick="shareMessage('B3,day,101\nb3,morning,101')">Share</button>
+        </div>
+        <div class="button-group">
+            <button onclick="addAndCopyMessage('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，早安吉祥！\n\n天利，向各位大人請安！')">Greetings</button>
+            <button class="share-button" onclick="shareMessage('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，早安吉祥！\n\n天利，向各位大人請安！')">Share</button>
+        </div>
+        <div class="button-group">
+            <button onclick="addAndCopyMessage('謝大人！')">謝大人！</button>
+            <button class="share-button" onclick="shareMessage('謝大人！')">Share</button>
+        </div>
+        <div class="button-group">
+            <button onclick="addAndCopyMessage('B7, morning, 101\nB3, noon, 101')">B7 Morning / B3 Noon</button>
+            <button class="share-button" onclick="shareMessage('B7, morning, 101\nB3, noon, 101')">Share</button>
+        </div>
+        <div class="button-group">
+            <button onclick="addAndCopyMessage('B3,work,101\nBo,scout,101\nBo,heading out,101')">B3 Work / Bo Scout / Bo Heading Out</button>
+            <button class="share-button" onclick="shareMessage('B3,work,101\nBo,scout,101\nBo,heading out,101')">Share</button>
+        </div>
+        <div class="button-group">
+            <button onclick="addAndCopyMessage('B7,work,101')">B7 Work</button>
+            <button class="share-button" onclick="shareMessage('B7,work,101')">Share</button>
+        </div>
+        <div class="button-group">
+            <button onclick="addAndCopyMessage('Bo,home,101')">Bo Home</button>
+            <button class="share-button" onclick="shareMessage('Bo,home,101')">Share</button>
+        </div>
+        <div class="button-group">
+            <button onclick="addAndCopyMessage('b3,3m prep,101')">B3 3M Prep</button>
+            <button class="share-button" onclick="shareMessage('b3,3m prep,101')">Share</button>
+        </div>
+        <div class="button-group">
+            <button onclick="addAndCopyMessage('b7,3m prep,101')">B7 3M Prep</button>
+            <button class="share-button" onclick="shareMessage('b7,3m prep,101')">Share</button>
+        </div>
+        <div class="button-group">
+            <button onclick="addAndCopyMessage('b3,shower,101')">B3 Shower</button>
+            <button class="share-button" onclick="shareMessage('b3,shower,101')">Share</button>
+        </div>
+        <div class="button-group">
+            <button onclick="addAndCopyMessage('b7,shower,101')">B7 Shower</button>
+            <button class="share-button" onclick="shareMessage('b7,shower,101')">Share</button>
+        </div>
+        <div class="button-group">
+            <button onclick="addAndCopyMessage('b3,dinner,101')">B3 Dinner</button>
+            <button class="share-button" onclick="shareMessage('b3,dinner,101')">Share</button>
+        </div>
+        <div class="button-group">
+            <button onclick="addAndCopyMessage('b7,dinner,101')">B7 Dinner</button>
+            <button class="share-button" onclick="shareMessage('b7,dinner,101')">Share</button>
+        </div>
+        <div class="button-group">
+            <button onclick="addAndCopyMessage('B7, noon, 101\nB3, evening, 101')">B7 Noon / B3 Evening</button>
+            <button class="share-button" onclick="shareMessage('B7, noon, 101\nB3, evening, 101')">Share</button>
+        </div>
+        <div class="button-group">
+            <button onclick="addAndCopyMessage('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，晚安萬福！')">晚安萬福</button>
+            <button class="share-button" onclick="shareMessage('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，晚安萬福！')">Share</button>
+        </div>
+        <div class="button-group">
+            <button onclick="addAndCopyMessage('B7, evening, 101\nB7, day, 101')">B7 Evening / B7 Day</button>
+            <button class="share-button" onclick="shareMessage('B7, evening, 101\nB7, day, 101')">Share</button>
+        </div>
     </div>
 
     <script>
@@ -140,18 +216,22 @@
 
         function shareCombinedMessages() {
             let combinedMessages = document.getElementById('combined-messages').value.trim();
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Shared Messages',
-                    text: combinedMessages,
-                }).catch(error => console.log('Error sharing:', error));
-            } else {
-                alert('Sharing not supported on this browser.');
-            }
+            shareMessage(combinedMessages);
         }
 
         function clearCombinedMessages() {
             document.getElementById('combined-messages').value = '';
+        }
+
+        function shareMessage(message) {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Shared Messages',
+                    text: message.trim(),
+                }).catch(error => console.log('Error sharing:', error));
+            } else {
+                alert('Sharing not supported on this browser.');
+            }
         }
     </script>
 </body>
