@@ -3,30 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Copy to Clipboard</title>
+    <title>Custom Clipboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             padding: 20px;
-            background: url('https://drive.google.com/file/d/1bWN1ukFhhQ9mia2kd2dFZpb86Us_3SN4/view?usp=drive_link') no-repeat center center fixed;
-            background-size: cover;
-            color: #f4f4f9;
+            background-color: #f4f4f9;
+            color: #333;
         }
-        h1 {
+        h1, h2 {
             text-align: center;
+            color: #333;
         }
-        .container {
+        .container, .custom-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 10px;
+        }
+        .custom-container {
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
         }
         button {
             padding: 15px 25px;
             font-size: 16px;
             border: none;
             border-radius: 5px;
-            background-color: #4CAF50; /* Changed to a softer green */
+            background-color: #4CAF50; /* Soft green */
             color: white;
             cursor: pointer;
             transition: background-color 0.3s;
@@ -39,6 +44,15 @@
         button:active {
             background-color: #36732e;
         }
+        input {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 300px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
         @media (max-width: 600px) {
             button {
                 flex: 1 1 100%;
@@ -48,10 +62,20 @@
     </style>
 </head>
 <body>
-    <h1>Ching On Reporting Clipboard</h1>
+    <h1>Ching On</h1>
+
+    <div class="custom-container">
+        <h2>Custom Clipboard Entry</h2>
+        <input type="text" id="custom-input" placeholder="Type your message here">
+        <div class="container">
+            <button onclick="customClipboard('b3')">Copy as b3</button>
+            <button onclick="customClipboard('b7')">Copy as b7</button>
+        </div>
+    </div>
+
     <div class="container">
         <button onclick="copyToClipboard('B3,day,101\nb3,morning,101')">Morning</button>
-        <button onclick="copyToClipboard('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，早安吉祥！\n天利，向各位大人請安！')">Greetings</button>
+        <button onclick="copyToClipboard('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，早安吉祥！\n\n天利，向各位大人請安！')">Greetings</button>
         <button onclick="copyToClipboard('謝大人！')">謝大人！</button>
         <button onclick="copyToClipboard('B7, morning, 101\nB3, noon, 101')">B7 Morning / B3 Noon</button>
         <button onclick="copyToClipboard('B3,work,101\nBo,scout,101\nBo,heading out,101')">B3 Work / Bo Scout / Bo Heading Out</button>
@@ -76,6 +100,12 @@
             textarea.select();
             document.execCommand('copy');
             document.body.removeChild(textarea);
+        }
+
+        function customClipboard(type) {
+            const input = document.getElementById('custom-input').value;
+            const message = `${type},${input},101`;
+            copyToClipboard(message);
         }
     </script>
 </body>
