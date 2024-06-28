@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Line Report</title>
+    <title>Line Report Clipboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,7 +15,34 @@
             text-align: center;
             color: #333;
         }
-        .container, .custom-container, .button-group {
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px 5px 0 0;
+            margin-right: 2px;
+        }
+        .tab.active {
+            background-color: #45a049;
+        }
+        .tab-content {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 0 5px 5px 5px;
+            background-color: white;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .container, .custom-container, .button-group, .report-group {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -26,7 +53,7 @@
             align-items: center;
             margin-bottom: 20px;
         }
-        .button-group {
+        .button-group, .report-group {
             align-items: center;
         }
         button {
@@ -83,6 +110,16 @@
             resize: vertical;
             height: 100px;
         }
+        .report-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .account-info {
+            font-weight: bold;
+        }
         @media (max-width: 600px) {
             button, .share-button {
                 flex: 1 1 100%;
@@ -95,95 +132,134 @@
     </style>
 </head>
 <body>
-    <h1>Line Report</h1>
+    <h1>Line Report and COC</h1>
+    <div class="tabs">
+        <div class="tab active" onclick="showTab('line-report')">Line Report</div>
+        <div class="tab" onclick="showTab('coc')">COC</div>
+    </div>
 
-    <div class="custom-container">
-        <h2>Custom Clipboard Entry</h2>
-        <input type="text" id="custom-input" placeholder="Type your message here">
+    <div id="line-report" class="tab-content active">
+        <!-- Existing Line Report Content -->
+        <div class="custom-container">
+            <h2>Custom Clipboard Entry</h2>
+            <input type="text" id="custom-input" placeholder="Type your message here">
+            <div class="container">
+                <button onclick="customClipboard('b3')">Add as b3</button>
+                <button onclick="customClipboard('b7')">Add as b7</button>
+            </div>
+        </div>
+
+        <div class="custom-container">
+            <h2>Combined Messages</h2>
+            <textarea id="combined-messages" readonly></textarea>
+            <div class="container">
+                <button onclick="copyCombinedToClipboard()">Copy Combined</button>
+                <button onclick="shareCombinedMessages()">Share Combined</button>
+                <button onclick="clearCombinedMessages()">Clear</button>
+            </div>
+        </div>
+
         <div class="container">
-            <button onclick="customClipboard('b3')">Add as b3</button>
-            <button onclick="customClipboard('b7')">Add as b7</button>
+            <div class="button-group">
+                <button onclick="addAndCopyMessage('B3,day,101\nb3,morning,101')">Morning</button>
+                <button class="share-button" onclick="shareMessage('B3,day,101\nb3,morning,101')">Share</button>
+            </div>
+            <div class="button-group">
+                <button onclick="addAndCopyMessage('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，早安吉祥！\n\n天利，向各位大人請安!')">Greetings</button>
+                <button class="share-button" onclick="shareMessage('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，早安吉祥！\n天利，向各位大人請安!')">Share</button>
+            </div>
+            <div class="button-group">
+                <button onclick="addAndCopyMessage('謝大人!')">謝大人！</button>
+                <button class="share-button" onclick="shareMessage('謝大人!')">Share</button>
+            </div>
+            <div class="button-group">
+                <button onclick="addAndCopyMessage('B7, morning, 101\nB3, noon, 101')">B7 Morning / B3 Noon</button>
+                <button class="share-button" onclick="shareMessage('B7, morning, 101\nB3, noon, 101')">Share</button>
+            </div>
+            <div class="button-group">
+                <button onclick="addAndCopyMessage('B3,work,101\nBo,scout,101\nBo,heading out,101')">B3 Work / Bo Scout / Bo Heading Out</button>
+                <button class="share-button" onclick="shareMessage('B3,work,101\nBo,scout,101\nBo,heading out,101')">Share</button>
+            </div>
+            <div class="button-group">
+                <button onclick="addAndCopyMessage('B7,work,101')">B7 Work</button>
+                <button class="share-button" onclick="shareMessage('B7,work,101')">Share</button>
+            </div>
+            <div class="button-group">
+                <button onclick="addAndCopyMessage('Bo,home,101')">Bo Home</button>
+                <button class="share-button" onclick="shareMessage('Bo,home,101')">Share</button>
+            </div>
+            <div class="button-group">
+                <button onclick="addAndCopyMessage('b3,3m prep,101')">B3 3M Prep</button>
+                <button class="share-button" onclick="shareMessage('b3,3m prep,101')">Share</button>
+            </div>
+            <div class="button-group">
+                <button onclick="addAndCopyMessage('b7,3m prep,101')">B7 3M Prep</button>
+                <button class="share-button" onclick="shareMessage('b7,3m prep,101')">Share</button>
+            </div>
+            <div class="button-group">
+                <button onclick="addAndCopyMessage('b3,shower,101')">B3 Shower</button>
+                <button class="share-button" onclick="shareMessage('b3,shower,101')">Share</button>
+            </div>
+            <div class="button-group">
+                <button onclick="addAndCopyMessage('b7,shower,101')">B7 Shower</button>
+                <button class="share-button" onclick="shareMessage('b7,shower,101')">Share</button>
+            </div>
+            <div class="button-group">
+                <button onclick="addAndCopyMessage('b3,dinner,101')">B3 Dinner</button>
+                <button class="share-button" onclick="shareMessage('b3,dinner,101')">Share</button>
+            </div>
+            <div class="button-group">
+                <button onclick="addAndCopyMessage('b7,dinner,101')">B7 Dinner</button>
+                <button class="share-button" onclick="shareMessage('b7,dinner,101')">Share</button>
+            </div>
+            <div class="button-group">
+                <button onclick="addAndCopyMessage('B7, noon, 101\nB3, evening, 101')">B7 Noon / B3 Evening</button>
+                <button class="share-button" onclick="shareMessage('B7, noon, 101\nB3, evening, 101')">Share</button>
+            </div>
+            <div class="button-group">
+                <button onclick="addAndCopyMessage('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，晚安萬福！')">晚安萬福</button>
+                <button class="share-button" onclick="shareMessage('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，晚安萬福！')">Share</button>
+            </div>
+            <div class="button-group">
+                <button onclick="addAndCopyMessage('B7, evening, 101\nB7, day, 101')">B7 Evening / B7 Day</button>
+                <button class="share-button" onclick="shareMessage('B7, evening, 101\nB7, day, 101')">Share</button>
+            </div>
         </div>
     </div>
 
-    <div class="custom-container">
-        <h2>Combined Messages</h2>
-        <textarea id="combined-messages" readonly></textarea>
-        <div class="container">
-            <button onclick="copyCombinedToClipboard()">Copy Combined</button>
-            <button onclick="shareCombinedMessages()">Share Combined</button>
-            <button onclick="clearCombinedMessages()">Clear</button>
+    <div id="coc" class="tab-content">
+        <div class="custom-container">
+            <h2>Attack Complete</h2>
+            <input type="number" id="attack-town" placeholder="Enter town number">
+            <input type="number" id="attack-stars" placeholder="Enter number of stars">
+            <div class="button-group">
+                <button onclick="addAttackReport()">Attack Complete</button>
+                <button class="share-button" onclick="shareIndividualAttackReport()">Share</button>
+            </div>
         </div>
-    </div>
-
-    <div class="container">
-        <div class="button-group">
-            <button onclick="addAndCopyMessage('B3,day,101\nb3,morning,101')">Morning</button>
-            <button class="share-button" onclick="shareMessage('B3,day,101\nb3,morning,101')">Share</button>
-        </div>
-        <div class="button-group">
-            <button onclick="addAndCopyMessage('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，早安吉祥！\n\n天利，向各位大人請安！')">Greetings</button>
-            <button class="share-button" onclick="shareMessage('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，早安吉祥！\n\n天利，向各位大人請安！')">Share</button>
-        </div>
-        <div class="button-group">
-            <button onclick="addAndCopyMessage('謝大人！')">謝大人！</button>
-            <button class="share-button" onclick="shareMessage('謝大人！')">Share</button>
-        </div>
-        <div class="button-group">
-            <button onclick="addAndCopyMessage('B7, morning, 101\nB3, noon, 101')">B7 Morning / B3 Noon</button>
-            <button class="share-button" onclick="shareMessage('B7, morning, 101\nB3, noon, 101')">Share</button>
-        </div>
-        <div class="button-group">
-            <button onclick="addAndCopyMessage('B3,work,101\nBo,scout,101\nBo,heading out,101')">B3 Work / Bo Scout / Bo Heading Out</button>
-            <button class="share-button" onclick="shareMessage('B3,work,101\nBo,scout,101\nBo,heading out,101')">Share</button>
-        </div>
-        <div class="button-group">
-            <button onclick="addAndCopyMessage('B7,work,101')">B7 Work</button>
-            <button class="share-button" onclick="shareMessage('B7,work,101')">Share</button>
-        </div>
-        <div class="button-group">
-            <button onclick="addAndCopyMessage('Bo,home,101')">Bo Home</button>
-            <button class="share-button" onclick="shareMessage('Bo,home,101')">Share</button>
-        </div>
-        <div class="button-group">
-            <button onclick="addAndCopyMessage('b3,3m prep,101')">B3 3M Prep</button>
-            <button class="share-button" onclick="shareMessage('b3,3m prep,101')">Share</button>
-        </div>
-        <div class="button-group">
-            <button onclick="addAndCopyMessage('b7,3m prep,101')">B7 3M Prep</button>
-            <button class="share-button" onclick="shareMessage('b7,3m prep,101')">Share</button>
-        </div>
-        <div class="button-group">
-            <button onclick="addAndCopyMessage('b3,shower,101')">B3 Shower</button>
-            <button class="share-button" onclick="shareMessage('b3,shower,101')">Share</button>
-        </div>
-        <div class="button-group">
-            <button onclick="addAndCopyMessage('b7,shower,101')">B7 Shower</button>
-            <button class="share-button" onclick="shareMessage('b7,shower,101')">Share</button>
-        </div>
-        <div class="button-group">
-            <button onclick="addAndCopyMessage('b3,dinner,101')">B3 Dinner</button>
-            <button class="share-button" onclick="shareMessage('b3,dinner,101')">Share</button>
-        </div>
-        <div class="button-group">
-            <button onclick="addAndCopyMessage('b7,dinner,101')">B7 Dinner</button>
-            <button class="share-button" onclick="shareMessage('b7,dinner,101')">Share</button>
-        </div>
-        <div class="button-group">
-            <button onclick="addAndCopyMessage('B7, noon, 101\nB3, evening, 101')">B7 Noon / B3 Evening</button>
-            <button class="share-button" onclick="shareMessage('B7, noon, 101\nB3, evening, 101')">Share</button>
-        </div>
-        <div class="button-group">
-            <button onclick="addAndCopyMessage('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，晚安萬福！')">晚安萬福</button>
-            <button class="share-button" onclick="shareMessage('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，晚安萬福！')">Share</button>
-        </div>
-        <div class="button-group">
-            <button onclick="addAndCopyMessage('B7, evening, 101\nB7, day, 101')">B7 Evening / B7 Day</button>
-            <button class="share-button" onclick="shareMessage('B7, evening, 101\nB7, day, 101')">Share</button>
+        <div class="custom-container">
+            <h2>Combined Reports</h2>
+            <textarea id="combined-reports" readonly></textarea>
+            <div class="container">
+                <button onclick="copyCombinedReportsToClipboard()">Copy Combined</button>
+                <button onclick="shareCombinedReports()">Share Combined</button>
+                <button onclick="clearCombinedReports()">Clear</button>
+            </div>
         </div>
     </div>
 
     <script>
+        function showTab(tabId) {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+            document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+        }
+
         function copyToClipboard(message) {
             const textarea = document.createElement('textarea');
             textarea.value = message;
@@ -233,6 +309,43 @@
                 alert('Sharing not supported on this browser.');
             }
         }
+
+        function addAttackReport() {
+            const town = document.getElementById('attack-town').value;
+            const stars = document.getElementById('attack-stars').value;
+            const starText = stars == 1 ? 'star' : 'stars';
+            const message = `B1, #${town} ${stars} ${starText}, war attack 1010, 101`;
+            addReportToCombined(message);
+            copyToClipboard(message);
+        }
+
+        function addReportToCombined(message) {
+            const combinedReports = document.getElementById('combined-reports');
+            combinedReports.value += message + '\n';
+        }
+
+        function copyCombinedReportsToClipboard() {
+            let combinedReports = document.getElementById('combined-reports').value.trim();
+            copyToClipboard(combinedReports);
+        }
+
+        function shareCombinedReports() {
+            let combinedReports = document.getElementById('combined-reports').value.trim();
+            shareMessage(combinedReports);
+        }
+
+        function clearCombinedReports() {
+            document.getElementById('combined-reports').value = '';
+        }
+
+        function shareIndividualAttackReport() {
+            const town = document.getElementById('attack-town').value;
+            const stars = document.getElementById('attack-stars').value;
+            const starText = stars == 1 ? 'star' : 'stars';
+            const message = `B1, #${town} ${stars} ${starText}, war attack 1010, 101`;
+            shareMessage(message);
+        }
     </script>
 </body>
 </html>
+
