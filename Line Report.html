@@ -90,7 +90,7 @@
 
     <div class="container">
         <button onclick="addAndCopyMessage('B3,day,101\nb3,morning,101')">Morning</button>
-        <button onclick="addAndCopyMessage('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，早安吉祥！\n天利，向各位大人請安!')">Greetings</button>
+        <button onclick="addAndCopyMessage('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，早安吉祥！\n\n天利，向各位大人請安!')">Greetings</button>
         <button onclick="addAndCopyMessage('謝大人!')">謝大人！</button>
         <button onclick="addAndCopyMessage('B7, morning, 101\nB3, noon, 101')">B7 Morning / B3 Noon</button>
         <button onclick="addAndCopyMessage('B3,work,101\nBo,scout,101\nBo,heading out,101')">B3 Work / Bo Scout / Bo Heading Out</button>
@@ -134,12 +134,12 @@
         }
 
         function copyCombinedToClipboard() {
-            const combinedMessages = document.getElementById('combined-messages').value;
+            let combinedMessages = document.getElementById('combined-messages').value.trim();
             copyToClipboard(combinedMessages);
         }
 
         function shareCombinedMessages() {
-            const combinedMessages = document.getElementById('combined-messages').value;
+            let combinedMessages = document.getElementById('combined-messages').value.trim();
             if (navigator.share) {
                 navigator.share({
                     title: 'Shared Messages',
