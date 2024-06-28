@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Line Report Clipboard</title>
+    <title>Line Report</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -76,20 +76,17 @@
             background-color: #36732e;
         }
         .share-button {
-            padding: 10px;
-            font-size: 12px;
+            padding: 15px 25px;
+            font-size: 16px;
             border: none;
-            border-radius: 50%;
+            border-radius: 5px;
             background-color: #4CAF50; /* Soft green */
             color: white;
             cursor: pointer;
             transition: background-color 0.3s;
-            width: 40px;
-            height: 40px;
             margin: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            flex: 1 1 auto;
+            max-width: 200px;
         }
         .share-button:hover {
             background-color: #45a049;
@@ -119,6 +116,10 @@
         }
         .account-info {
             font-weight: bold;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
         }
         @media (max-width: 600px) {
             button, .share-button {
@@ -153,8 +154,8 @@
             <h2>Combined Messages</h2>
             <textarea id="combined-messages" readonly></textarea>
             <div class="container">
-                <button onclick="copyCombinedToClipboard()">Copy Combined</button>
-                <button onclick="shareCombinedMessages()">Share Combined</button>
+                <button onclick="copyCombinedToClipboard()">Copy</button>
+                <button class="share-button" onclick="shareCombinedMessages()">Share</button>
                 <button onclick="clearCombinedMessages()">Clear</button>
             </div>
         </div>
@@ -165,7 +166,7 @@
                 <button class="share-button" onclick="shareMessage('B3,day,101\nb3,morning,101')">Share</button>
             </div>
             <div class="button-group">
-                <button onclick="addAndCopyMessage('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，早安吉祥！\n\n天利，向各位大人請安!')">Greetings</button>
+                <button onclick="addAndCopyMessage('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，早安吉祥！\n天利，向各位大人請安!')">Greetings</button>
                 <button class="share-button" onclick="shareMessage('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，早安吉祥！\n天利，向各位大人請安!')">Share</button>
             </div>
             <div class="button-group">
@@ -217,8 +218,8 @@
                 <button class="share-button" onclick="shareMessage('B7, noon, 101\nB3, evening, 101')">Share</button>
             </div>
             <div class="button-group">
-                <button onclick="addAndCopyMessage('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，晚安萬福！')">晚安萬福</button>
-                <button class="share-button" onclick="shareMessage('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，晚安萬福！')">Share</button>
+                <button onclick="addAndCopyMessage('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，晚安萬福!')">晚安萬福</button>
+                <button class="share-button" onclick="shareMessage('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，晚安萬福!')">Share</button>
             </div>
             <div class="button-group">
                 <button onclick="addAndCopyMessage('B7, evening, 101\nB7, day, 101')">B7 Evening / B7 Day</button>
@@ -229,20 +230,22 @@
 
     <div id="coc" class="tab-content">
         <div class="custom-container">
-            <h2>Attack Complete</h2>
+            <h2>COC Attacks</h2>
             <input type="number" id="attack-town" placeholder="Enter town number">
-            <input type="number" id="attack-stars" placeholder="Enter number of stars">
+            <span id="town-error" class="error-message"></span>
+            <input type="number" id="attack-stars" placeholder="Enter number of stars" min="0" max="3">
+            <span id="stars-error" class="error-message"></span>
             <div class="button-group">
                 <button onclick="addAttackReport()">Attack Complete</button>
-                <button class="share-button" onclick="shareIndividualAttackReport()">Share</button>
+                <button class="share-button" onclick="shareIndividualReport()">Share</button>
             </div>
         </div>
         <div class="custom-container">
             <h2>Combined Reports</h2>
             <textarea id="combined-reports" readonly></textarea>
             <div class="container">
-                <button onclick="copyCombinedReportsToClipboard()">Copy Combined</button>
-                <button onclick="shareCombinedReports()">Share Combined</button>
+                <button onclick="copyCombinedReportsToClipboard()">Copy</button>
+                <button class="share-button" onclick="shareCombinedReports()">Share</button>
                 <button onclick="clearCombinedReports()">Clear</button>
             </div>
         </div>
@@ -310,13 +313,46 @@
             }
         }
 
+        function validateInput(input, min, max) {
+            const value = parseInt(input.value, 10);
+            if (isNaN(value) || value < min || value > max) {
+                return false;
+            }
+            return true;
+        }
+
         function addAttackReport() {
-            const town = document.getElementById('attack-town').value;
-            const stars = document.getElementById('attack-stars').value;
-            const starText = stars == 1 ? 'star' : 'stars';
-            const message = `B1,#${town} ${stars} ${starText},war attack 1010, 101`;
-            addReportToCombined(message);
-            copyToClipboard(message);
+            const town = document.getElementById('attack-town');
+            const stars = document.getElementById('attack-stars');
+            const townError = document.getElementById('town-error');
+            const starsError = document.getElementById('stars-error');
+
+            let valid = true;
+
+            if (!validateInput(town, 0, Infinity)) {
+                townError.textContent = "Invalid - please try again";
+                valid = false;
+            } else {
+                townError.textContent = "";
+            }
+
+            if (!validateInput(stars, 0, 3)) {
+                starsError.textContent = "Invalid - please try again";
+                valid = false;
+            } else {
+                starsError.textContent = "";
+            }
+
+            if (valid) {
+                const townValue = town.value;
+                const starsValue = stars.value;
+                const starText = starsValue == 1 ? 'star' : 'stars';
+                const message = `B1, #${townValue} ${starsValue} ${starText}, war attack 1010, 101`;
+                addReportToCombined(message);
+                copyToClipboard(message);
+                town.value = '';
+                stars.value = '';
+            }
         }
 
         function addReportToCombined(message) {
@@ -338,11 +374,11 @@
             document.getElementById('combined-reports').value = '';
         }
 
-        function shareIndividualAttackReport() {
+        function shareIndividualReport() {
             const town = document.getElementById('attack-town').value;
             const stars = document.getElementById('attack-stars').value;
             const starText = stars == 1 ? 'star' : 'stars';
-            const message = `B1,#${town} ${stars} ${starText},war attack 1010, 101`;
+            const message = `B1, #${town} ${stars} ${starText}, war attack 1010, 101`;
             shareMessage(message);
         }
     </script>
