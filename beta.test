@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Clipboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        .container, .custom-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        .custom-container {
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 15px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50; /* Soft green */
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            flex: 1 1 calc(50% - 20px);
+            max-width: 200px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:active {
+            background-color: #36732e;
+        }
+        input, textarea {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 300px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        textarea {
+            resize: vertical;
+            height: 100px;
+        }
+        @media (max-width: 600px) {
+            button {
+                flex: 1 1 100%;
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Ching On</h1>
+
+    <div class="custom-container">
+        <h2>Custom Clipboard Entry</h2>
+        <input type="text" id="custom-input" placeholder="Type your message here">
+        <div class="container">
+            <button onclick="customClipboard('b3')">Add as b3</button>
+            <button onclick="customClipboard('b7')">Add as b7</button>
+        </div>
+    </div>
+
+    <div class="custom-container">
+        <h2>Combined Messages</h2>
+        <textarea id="combined-messages" readonly></textarea>
+        <div class="container">
+            <button onclick="copyCombinedToClipboard()">Copy Combined</button>
+            <button onclick="shareCombinedMessages()">Share Combined</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <button onclick="copyToClipboard('B3,day,101\nb3,morning,101')">Morning</button>
+        <button onclick="copyToClipboard('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，早安吉祥！\n\n天利，向各位大人請安！')">Greetings</button>
+        <button onclick="copyToClipboard('謝大人！')">謝大人！</button>
+        <button onclick="copyToClipboard('B7, morning, 101\nB3, noon, 101')">B7 Morning / B3 Noon</button>
+        <button onclick="copyToClipboard('B3,work,101\nBo,scout,101\nBo,heading out,101')">B3 Work / Bo Scout / Bo Heading Out</button>
+        <button onclick="copyToClipboard('B7,work,101')">B7 Work</button>
+        <button onclick="copyToClipboard('Bo,home,101')">Bo Home</button>
+        <button onclick="copyToClipboard('b3,3m prep,101')">B3 3M Prep</button>
+        <button onclick="copyToClipboard('b7,3m prep,101')">B7 3M Prep</button>
+        <button onclick="copyToClipboard('b3,shower,101')">B3 Shower</button>
+        <button onclick="copyToClipboard('b7,shower,101')">B7 Shower</button>
+        <button onclick="copyToClipboard('b3,dinner,101')">B3 Dinner</button>
+        <button onclick="copyToClipboard('b7,dinner,101')">B7 Dinner</button>
+        <button onclick="copyToClipboard('B7, noon, 101\nB3, evening, 101')">B7 Noon / B3 Evening</button>
+        <button onclick="copyToClipboard('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，晚安萬福！')">晚安萬福</button>
+        <button onclick="copyToClipboard('B7, evening, 101\nB7, day, 101')">B7 Evening / B7 Day</button>
+    </div>
+
+    <script>
+        function copyToClipboard(message) {
+            const textarea = document.createElement('textarea');
+            textarea.value = message;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+        }
+
+        function customClipboard(type) {
+            const input = document.getElementById('custom-input').value;
+            const message = `${type},${input},101`;
+            const combinedMessages = document.getElementById('combined-messages');
+            combinedMessages.value += message + '\n';
+        }
+
+        function copyCombinedToClipboard() {
+            const combinedMessages = document.getElementById('combined-messages').value;
+            copyToClipboard(combinedMessages);
+        }
+
+        function shareCombinedMessages() {
+            const combinedMessages = document.getElementById('combined-messages').value;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Shared Messages',
+                    text: combinedMessages,
+                }).catch(error => console.log('Error sharing:', error));
+            } else {
+                alert('Sharing not supported on this browser.');
+            }
+        }
+    </script>
+</body>
+</html>
+
+
