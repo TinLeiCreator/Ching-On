@@ -66,7 +66,7 @@
     </style>
 </head>
 <body>
-    <h1>Lei's Line Ching On Report Clipboard</h1>
+    <h1>Ching On</h1>
 
     <div class="custom-container">
         <h2>Custom Clipboard Entry</h2>
@@ -81,14 +81,15 @@
         <h2>Combined Messages</h2>
         <textarea id="combined-messages" readonly></textarea>
         <div class="container">
-            <button onclick="copyCombinedToClipboard()">Copy</button>
-            <button onclick="shareCombinedMessages()">Share</button>
+            <button onclick="copyCombinedToClipboard()">Copy Combined</button>
+            <button onclick="shareCombinedMessages()">Share Combined</button>
+            <button onclick="clearCombinedMessages()">Clear</button>
         </div>
     </div>
 
     <div class="container">
         <button onclick="addMessageToCombined('B3,day,101\nb3,morning,101')">Morning</button>
-        <button onclick="addMessageToCombined('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，早安吉祥！\n天利，向各位大人請安！')">Greetings</button>
+        <button onclick="addMessageToCombined('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，早安吉祥！\n\n天利，向各位大人請安！')">Greetings</button>
         <button onclick="addMessageToCombined('謝大人！')">謝大人！</button>
         <button onclick="addMessageToCombined('B7, morning, 101\nB3, noon, 101')">B7 Morning / B3 Noon</button>
         <button onclick="addMessageToCombined('B3,work,101\nBo,scout,101\nBo,heading out,101')">B3 Work / Bo Scout / Bo Heading Out</button>
@@ -142,7 +143,10 @@
                 alert('Sharing not supported on this browser.');
             }
         }
+
+        function clearCombinedMessages() {
+            document.getElementById('combined-messages').value = '';
+        }
     </script>
 </body>
 </html>
-
