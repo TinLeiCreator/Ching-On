@@ -87,8 +87,12 @@
             width: 100%;
             max-width: 300px;
             border-radius: 5px;
-            border: 1px solid #ccc;
+            border: 1px solid #000;
             color: #333;
+        }
+        textarea {
+            height: 100px;
+            max-height: 200px;
         }
         .result {
             font-size: 18px;
@@ -99,9 +103,9 @@
             border-radius: 5px;
             width: 100%;
             max-width: 300px;
+            border: 1px solid #000;
             white-space: pre-wrap;
             overflow-y: auto;
-            max-height: 200px;
         }
         .error-message {
             color: red;
@@ -194,12 +198,12 @@
     <div id="coc" class="tab-content">
         <!-- COC Content -->
         <h2>COC Report</h2>
-        <input type="text" id="coc-town" placeholder="Town Number">
-        <input type="text" id="coc-stars" placeholder="Stars (0-3)">
+        <input type="text" id="coc-town" placeholder="Town Number" inputmode="numeric" pattern="\d*">
+        <input type="text" id="coc-stars" placeholder="Stars (0-3)" inputmode="numeric" pattern="[0-3]*">
         <button onclick="addCOCReport()">Attack Complete</button>
         <textarea id="coc-combined-report" class="result"></textarea>
-        <button onclick="copyCombinedCOCReport()">Copy Combined Report</button>
-        <button onclick="shareCombinedCOCReport()">Share Combined Report</button>
+        <button onclick="copyCombinedCOCReport()">Copy</button>
+        <button onclick="shareCombinedCOCReport()">Share</button>
         <button onclick="clearCombinedCOCReport()">Clear Combined Report</button>
     </div>
     <div id="divination" class="tab-content">
@@ -229,7 +233,7 @@
             </div>
         </div>
         <div id="divination-result" class="result"></div>
-        <button onclick="copyDivinationResult()">Copy to Clipboard</button>
+        <button onclick="copyDivinationResult()">Copy</button>
         <button onclick="shareDivinationResult()">Share</button>
         <button onclick="clearDivination()">Clear</button>
     </div>
