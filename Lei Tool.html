@@ -16,7 +16,7 @@
             align-items: center;
             justify-content: flex-start;
             height: 100vh;
-            overflow-y: auto;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
         }
         h1, h2 {
             text-align: center;
@@ -46,9 +46,6 @@
             color: white;
             cursor: pointer;
             transition: background-color 0.3s;
-            width: 100%;
-            max-width: 300px;
-            text-align: center;
         }
         .menu-button:hover, .back-button:hover, button:hover {
             background-color: #00A600;
@@ -126,6 +123,13 @@
             font-size: 12px;
             color: #888;
         }
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 10px;
+            width: 100%;
+        }
         .bottom-buttons {
             display: flex;
             justify-content: space-between;
@@ -141,6 +145,7 @@
         }
         .selected {
             background-color: yellow;
+            color: black; /* Ensure text is visible on yellow background */
         }
     </style>
 </head>
