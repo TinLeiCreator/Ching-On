@@ -23,48 +23,21 @@
             color: #333;
             margin: 10px 0;
         }
-        .tabs {
-            display: flex;
-            justify-content: center;
-            width: 100%;
-            background-color: #00C300;
-            margin-bottom: 10px;
-        }
-        .tab {
-            padding: 10px 20px;
-            cursor: pointer;
-            flex: 1;
-            text-align: center;
-            border-bottom: 2px solid transparent;
-            color: white;
-            border: 1px solid black;
-            box-sizing: border-box;
-        }
-        .tab.active {
-            border-bottom: 2px solid white;
-            font-weight: bold;
-        }
-        .tab-content {
+        .main-menu, .content {
             display: none;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
+            gap: 20px;
             width: 100%;
             max-width: 600px;
             background-color: #FFFFFF;
             padding: 20px;
             border-radius: 10px;
         }
-        .tab-content.active {
+        .main-menu.active, .content.active {
             display: flex;
         }
-        .button-group {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-        }
-        button {
+        .menu-button, .back-button, button {
             padding: 10px 20px;
             font-size: 16px;
             border: none;
@@ -73,13 +46,14 @@
             color: white;
             cursor: pointer;
             transition: background-color 0.3s;
-            flex: 1 1 45%;
-            max-width: 150px;
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
         }
-        button:hover {
+        .menu-button:hover, .back-button:hover, button:hover {
             background-color: #00A600;
         }
-        button:active {
+        .menu-button:active, .back-button:active, button:active {
             background-color: #008A00;
         }
         input, textarea {
@@ -164,23 +138,25 @@
                 height: 80px;
                 font-size: 18px;
             }
-            .tab {
-                flex: 1 1 33.33%;
-                padding: 5px 10px;
-                font-size: 14px;
-            }
+        }
+        .selected {
+            background-color: yellow;
         }
     </style>
 </head>
 <body>
-    <h1>Lei Tool</h1>
-    <div class="tabs">
-        <div class="tab active" onclick="showTab('line-report')">Line Report</div>
-        <div class="tab" onclick="showTab('coc')">COC</div>
-        <div class="tab" onclick="showTab('divination')">Divination</div>
+    <h1 id="main-title">Lei Tool</h1>
+
+    <!-- Main Menu -->
+    <div id="main-menu" class="main-menu active">
+        <button class="menu-button" onclick="showContent('line-report')">Line Report</button>
+        <button class="menu-button" onclick="showContent('coc')">COC</button>
+        <button class="menu-button" onclick="showContent('divination')">Divination</button>
+        <button class="menu-button" onclick="showContent('about-me')">About Me</button>
     </div>
-    <div id="line-report" class="tab-content active">
-        <!-- Line Report Content -->
+
+    <!-- Line Report Content -->
+    <div id="line-report" class="content">
         <h2>Line Report</h2>
         <div class="button-group">
             <button onclick="autoClipboard('B3,day,101\nB3,morning,101')">B3 Morning</button>
@@ -211,9 +187,11 @@
             <button onclick="clearCombinedReport()">Clear</button>
             <button onclick="shareClipboard()">Share</button>
         </div>
+        <button class="back-button" onclick="showMainMenu()">Back to Main Menu</button>
     </div>
-    <div id="coc" class="tab-content">
-        <!-- COC Content -->
+
+    <!-- COC Content -->
+    <div id="coc" class="content">
         <h2>COC Report</h2>
         <input type="text" id="coc-town" placeholder="Town Number" inputmode="numeric" pattern="\d*">
         <input type="text" id="coc-stars" placeholder="Stars (0-3)" inputmode="numeric" pattern="[0-3]*">
@@ -224,19 +202,21 @@
             <button onclick="copyCombinedCOCReport()">Copy</button>
             <button onclick="shareCombinedCOCReport()">Share</button>
         </div>
+        <button class="back-button" onclick="showMainMenu()">Back to Main Menu</button>
     </div>
-    <div id="divination" class="tab-content">
-        <!-- Divination Content -->
+
+    <!-- Divination Content -->
+    <div id="divination" class="content">
         <h2>Divination</h2>
         <input type="text" id="question" placeholder="What is your question?">
         <div class="button-group">
-            <button id="qButton" onclick="setQuestionType('Q')">Q</button>
-            <button id="cButton" onclick="setQuestionType('C')">C</button>
+            <button id="qButton" class="menu-button" onclick="setQuestionType('Q')">Q</button>
+            <button id="cButton" class="menu-button" onclick="setQuestionType('C')">C</button>
         </div>
         <input type="text" id="input-number" placeholder="Enter a 3-digit number (e.g., 324)" inputmode="numeric" pattern="[1-9]{3}" maxlength="3" oninput="validateInput()">
         <span id="input-error" class="error-message"></span>
         <div class="button-group">
-            <button onclick="calculateDivination()">DIV</button>
+            <button class="menu-button" onclick="calculateDivination()">DIV</button>
         </div>
         <div class="slots">
             <div id="slot1" class="slot">
@@ -253,23 +233,34 @@
         </div>
         <div id="divination-result" class="result"></div>
         <div class="bottom-buttons">
-            <button onclick="clearDivination()">Clear</button>
-            <button onclick="copyDivinationResult()">Copy</button>
-            <button onclick="shareDivinationResult()">Share</button>
+            <button class="menu-button" onclick="clearDivination()">Clear</button>
+            <button class="menu-button" onclick="copyDivinationResult()">Copy</button>
+            <button class="menu-button" onclick="shareDivinationResult()">Share</button>
         </div>
+        <button class="back-button" onclick="showMainMenu()">Back to Main Menu</button>
     </div>
+
+    <!-- About Me Content -->
+    <div id="about-me" class="content">
+        <h2>About Me</h2>
+        <p>Created by Tin Lei 6/28/24</p>
+        <button class="back-button" onclick="showMainMenu()">Back to Main Menu</button>
+    </div>
+
     <div class="footer">Created by Tin Lei 2024</div>
 
     <script>
-        function showTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.getElementById(tabId).classList.add('active');
-            document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+        function showMainMenu() {
+            document.querySelectorAll('.content').forEach(content => content.classList.remove('active'));
+            document.getElementById('main-menu').classList.add('active');
+            document.getElementById('main-title').style.display = 'block';
+        }
+
+        function showContent(contentId) {
+            document.getElementById('main-menu').classList.remove('active');
+            document.querySelectorAll('.content').forEach(content => content.classList.remove('active'));
+            document.getElementById(contentId).classList.add('active');
+            document.getElementById('main-title').style.display = 'none';
         }
 
         // Line Report Functions
