@@ -195,6 +195,7 @@
         <input type="text" id="custom-message" placeholder="Enter custom message">
         <div class="centered-buttons">
             <button onclick="addCustomMessage('B3')">B3</button>
+            <button onclick="clearCustomMessage()">Clear</button>
             <button onclick="addCustomMessage('B7')">B7</button>
         </div>
         <textarea id="combined-report" class="result"></textarea>
@@ -231,6 +232,9 @@
         </div>
         <input type="text" id="input-number" placeholder="Enter a 3-digit number (e.g., 324)" inputmode="numeric" pattern="[1-9]{3}" maxlength="3" oninput="validateInput()">
         <span id="input-error" class="error-message"></span>
+        <div class="centered-buttons">
+            <button class="menu-button" onclick="clearDivinationInputs()">Clear Inputs</button>
+        </div>
         <div class="centered-buttons">
             <button class="menu-button" onclick="calculateDivination()">DIV</button>
         </div>
@@ -292,6 +296,10 @@
             autoClipboard(message);
         }
 
+        function clearCustomMessage() {
+            document.getElementById('custom-message').value = '';
+        }
+
         function copyToClipboard(text) {
             const textarea = document.createElement('textarea');
             textarea.value = text;
@@ -315,6 +323,7 @@
 
         function clearCombinedReport() {
             document.getElementById('combined-report').value = '';
+            clearCustomMessage();
         }
 
         // COC Functions
@@ -391,28 +400,11 @@
                 });
             }
 
-            function getCurrentTimestamp() {
-                const now = new Date();
-                const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-                const day = dayNames[now.getDay()];
-                const date = now.getDate();
-                const month = now.getMonth() + 1; // Months are zero-indexed
-                const year = now.getFullYear();
-                let hours = now.getHours();
-                const minutes = now.getMinutes().toString().padStart(2, '0');
-                const seconds = now.getSeconds().toString().padStart(2, '0');
-                const ampm = hours >= 12 ? 'PM' : 'AM';
-                hours = hours % 12;
-                hours = hours ? hours : 12; // The hour '0' should be '12'
-                return `${month}/${date}/${year}\n${hours}:${minutes}:${seconds} ${ampm}\n${day}`;
-            }
-
             function processNextDigit(digitIndex) {
                 if (digitIndex >= inputNumber.length) {
                     const finalSlot = slots[currentSlotIndex];
-                    const timestamp = getCurrentTimestamp();
                     if (question && questionType) {
-                        resultElement.textContent += `${questionType}: ${question}\n${inputNumber}\n${finalSlot}\n\n${timestamp}\n\n`;
+                        resultElement.textContent += `${questionType}: ${question}\n${inputNumber}\n${finalSlot}\n\n`;
                     } else {
                         resultElement.textContent = '';
                     }
@@ -452,6 +444,12 @@
             questionType = '';
             document.getElementById('qButton').classList.remove('selected');
             document.getElementById('cButton').classList.remove('selected');
+        }
+
+        function clearDivinationInputs() {
+            document.getElementById('question').value = '';
+            document.getElementById('input-number').value = '';
+            document.getElementById('input-error').textContent = '';
         }
 
         function copyDivinationResult() {
