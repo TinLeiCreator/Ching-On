@@ -14,8 +14,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* Center vertically */
-            min-height: 100vh; /* Ensure it takes full height */
+            justify-content: center;
+            height: 100vh;
             overflow: hidden; /* Prevent horizontal scrolling */
         }
         h1, h2 {
@@ -34,6 +34,7 @@
             padding: 20px;
             border-radius: 10px;
             overflow-y: auto; /* Enable vertical scrolling */
+            height: 100%; /* Ensure full height */
         }
         .main-menu.active, .content.active {
             display: flex;
