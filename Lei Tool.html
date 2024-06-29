@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LeiTool</title>
+    <title>Lei Tool</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -29,6 +29,7 @@
             width: 100%;
             background-color: #00C300;
             margin-bottom: 10px;
+            overflow-x: auto;
         }
         .tab {
             padding: 10px 20px;
@@ -37,6 +38,7 @@
             text-align: center;
             border-bottom: 2px solid transparent;
             color: white;
+            border: 1px solid black;
         }
         .tab.active {
             border-bottom: 2px solid white;
@@ -91,8 +93,8 @@
             color: #333;
         }
         textarea {
-            height: 100px;
-            max-height: 200px;
+            height: 150px;
+            max-height: 300px;
         }
         .result {
             font-size: 18px;
@@ -106,6 +108,8 @@
             border: 1px solid #000;
             white-space: pre-wrap;
             overflow-y: auto;
+            height: 150px;
+            max-height: 300px;
         }
         .error-message {
             color: red;
@@ -148,17 +152,26 @@
             font-size: 12px;
             color: #888;
         }
+        .bottom-buttons {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 300px;
+        }
         @media (max-width: 600px) {
             .slot {
-                width: 80px;
-                height: 80px;
-                font-size: 18px;
+                width: 100px;
+                height: 100px;
+                font-size: 24px;
+            }
+            .tab {
+                flex: none;
             }
         }
     </style>
 </head>
 <body>
-    <h1>LeiTool</h1>
+    <h1>Lei Tool</h1>
     <div class="tabs">
         <div class="tab active" onclick="showTab('line-report')">Line Report</div>
         <div class="tab" onclick="showTab('coc')">COC</div>
@@ -168,23 +181,23 @@
         <!-- Line Report Content -->
         <h2>Line Report</h2>
         <div class="button-group">
-            <button onclick="autoClipboard('B3,day,101\nB3,morning,101')">Morning</button>
+            <button onclick="autoClipboard('B3,day,101\nB3,morning,101')">B3 Morning</button>
             <button onclick="autoClipboard('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，早安吉祥！\n天利，向各位大人請安！')">Greetings</button>
             <button onclick="autoClipboard('謝大人！')">謝大人！</button>
-            <button onclick="autoClipboard('B3,work,101\nBo,scout,101\nBo,heading out,101')">Work</button>
-            <button onclick="autoClipboard('B7,work,101')">Work B7</button>
-            <button onclick="autoClipboard('Bo,home,101')">Home</button>
-            <button onclick="autoClipboard('B3,3m prep,101')">3m Prep B3</button>
-            <button onclick="autoClipboard('B7,3m prep,101')">3m Prep B7</button>
-            <button onclick="autoClipboard('B3,shower,101')">Shower B3</button>
-            <button onclick="autoClipboard('B7,shower,101')">Shower B7</button>
-            <button onclick="autoClipboard('B3,dinner,101')">Dinner B3</button>
-            <button onclick="autoClipboard('B7,dinner,101')">Dinner B7</button>
-            <button onclick="autoClipboard('B7,noon,101')">Noon B7</button>
-            <button onclick="autoClipboard('B3,evening,101')">Evening B3</button>
+            <button onclick="autoClipboard('B3,work,101\nBo,scout,101\nBo,heading out,101')">B3 Work</button>
+            <button onclick="autoClipboard('B7,work,101')">B7 Work</button>
+            <button onclick="autoClipboard('Bo,home,101')">Bo Home</button>
+            <button onclick="autoClipboard('B3,3m prep,101')">B3 3m Prep</button>
+            <button onclick="autoClipboard('B7,3m prep,101')">B7 3m Prep</button>
+            <button onclick="autoClipboard('B3,shower,101')">B3 Shower</button>
+            <button onclick="autoClipboard('B7,shower,101')">B7 Shower</button>
+            <button onclick="autoClipboard('B3,dinner,101')">B3 Dinner</button>
+            <button onclick="autoClipboard('B7,dinner,101')">B7 Dinner</button>
+            <button onclick="autoClipboard('B7,noon,101')">B7 Noon</button>
+            <button onclick="autoClipboard('B3,evening,101')">B3 Evening</button>
             <button onclick="autoClipboard('臣，定海正緣，正六品神龍武教法師，朝拜玉皇，晚安萬福！')">Good Night</button>
-            <button onclick="autoClipboard('B7,evening,101')">Evening B7</button>
-            <button onclick="autoClipboard('B7,day,101')">Day B7</button>
+            <button onclick="autoClipboard('B7,evening,101')">B7 Evening</button>
+            <button onclick="autoClipboard('B7,day,101')">B7 Day</button>
         </div>
         <input type="text" id="custom-message" placeholder="Enter custom message">
         <div class="button-group">
@@ -192,8 +205,10 @@
             <button onclick="addCustomMessage('B7')" style="max-width: 100px; margin: 0 auto;">B7</button>
         </div>
         <textarea id="combined-report" class="result"></textarea>
-        <button onclick="shareClipboard()">Share</button>
-        <button onclick="clearCombinedReport()">Clear Combined Report</button>
+        <div class="bottom-buttons">
+            <button onclick="clearCombinedReport()">Clear</button>
+            <button onclick="shareClipboard()">Share</button>
+        </div>
     </div>
     <div id="coc" class="tab-content">
         <!-- COC Content -->
@@ -202,9 +217,11 @@
         <input type="text" id="coc-stars" placeholder="Stars (0-3)" inputmode="numeric" pattern="[0-3]*">
         <button onclick="addCOCReport()">Attack Complete</button>
         <textarea id="coc-combined-report" class="result"></textarea>
-        <button onclick="copyCombinedCOCReport()">Copy</button>
-        <button onclick="shareCombinedCOCReport()">Share</button>
-        <button onclick="clearCombinedCOCReport()">Clear Combined Report</button>
+        <div class="bottom-buttons">
+            <button onclick="clearCombinedCOCReport()">Clear</button>
+            <button onclick="copyCombinedCOCReport()">Copy</button>
+            <button onclick="shareCombinedCOCReport()">Share</button>
+        </div>
     </div>
     <div id="divination" class="tab-content">
         <!-- Divination Content -->
@@ -233,9 +250,11 @@
             </div>
         </div>
         <div id="divination-result" class="result"></div>
-        <button onclick="copyDivinationResult()">Copy</button>
-        <button onclick="shareDivinationResult()">Share</button>
-        <button onclick="clearDivination()">Clear</button>
+        <div class="bottom-buttons">
+            <button onclick="clearDivination()">Clear</button>
+            <button onclick="copyDivinationResult()">Copy</button>
+            <button onclick="shareDivinationResult()">Share</button>
+        </div>
     </div>
     <div class="footer">Created by Tin Lei 2024</div>
 
@@ -449,6 +468,4 @@
     </script>
 </body>
 </html>
-
-
 
