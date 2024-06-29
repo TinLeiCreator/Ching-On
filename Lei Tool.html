@@ -136,6 +136,12 @@
             width: 100%;
             max-width: 300px;
         }
+        .centered-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+        }
         @media (max-width: 600px) {
             .slot {
                 width: 80px;
@@ -144,7 +150,7 @@
             }
         }
         .selected {
-            background-color: yellow;
+            background-color: #FFD700; /* Match yellow color from slots */
             color: black; /* Ensure text is visible on yellow background */
         }
     </style>
@@ -183,9 +189,9 @@
             <button onclick="autoClipboard('B7,day,101')">B7 Day</button>
         </div>
         <input type="text" id="custom-message" placeholder="Enter custom message">
-        <div class="button-group">
-            <button onclick="addCustomMessage('B3')" style="max-width: 100px; margin: 0 auto;">B3</button>
-            <button onclick="addCustomMessage('B7')" style="max-width: 100px; margin: 0 auto;">B7</button>
+        <div class="centered-buttons">
+            <button onclick="addCustomMessage('B3')">B3</button>
+            <button onclick="addCustomMessage('B7')">B7</button>
         </div>
         <textarea id="combined-report" class="result"></textarea>
         <div class="bottom-buttons">
@@ -198,8 +204,9 @@
     <!-- COC Content -->
     <div id="coc" class="content">
         <h2>COC Report</h2>
-        <input type="text" id="coc-town" placeholder="Town Number" inputmode="numeric" pattern="\d*">
+        <input type="text" id="coc-town" placeholder="Town Number" maxlength="2" inputmode="numeric" pattern="\d*">
         <input type="text" id="coc-stars" placeholder="Stars (0-3)" inputmode="numeric" pattern="[0-3]*">
+        <span id="coc-error" class="error-message"></span>
         <button onclick="addCOCReport()">Attack Complete</button>
         <textarea id="coc-combined-report" class="result"></textarea>
         <div class="bottom-buttons">
@@ -214,13 +221,13 @@
     <div id="divination" class="content">
         <h2>Divination</h2>
         <input type="text" id="question" placeholder="What is your question?">
-        <div class="button-group">
+        <div class="centered-buttons">
             <button id="qButton" class="menu-button" onclick="setQuestionType('Q')">Q</button>
             <button id="cButton" class="menu-button" onclick="setQuestionType('C')">C</button>
         </div>
         <input type="text" id="input-number" placeholder="Enter a 3-digit number (e.g., 324)" inputmode="numeric" pattern="[1-9]{3}" maxlength="3" oninput="validateInput()">
         <span id="input-error" class="error-message"></span>
-        <div class="button-group">
+        <div class="centered-buttons">
             <button class="menu-button" onclick="calculateDivination()">DIV</button>
         </div>
         <div class="slots">
@@ -310,8 +317,11 @@
         function addCOCReport() {
             const town = document.getElementById('coc-town').value;
             const stars = document.getElementById('coc-stars').value;
-            if (!/^\d+$/.test(town) || !/^[0-3]$/.test(stars)) {
-                alert('Invalid input. Please enter a valid town number and stars (0-3).');
+            const errorElement = document.getElementById('coc-error');
+            errorElement.textContent = '';
+
+            if (!/^\d{1,2}$/.test(town) || !/^[0-3]$/.test(stars)) {
+                errorElement.textContent = 'Invalid input. Please enter a valid town number (1-99) and stars (0-3).';
                 return;
             }
             const report = `B1, #${town} ${stars} ${stars === '1' ? 'star' : 'stars'}, war attack 1010, 101\n`;
