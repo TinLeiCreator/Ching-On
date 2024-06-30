@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Name Variation Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            padding: 0 10px;
+            width: 100%;
+            max-width: 400px;
+        }
+        .input-field {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin: 10px 0;
+        }
+        .input-field label {
+            margin-bottom: 5px;
+        }
+        .input-field input[type="text"],
+        .input-field input[type="date"],
+        .input-field button {
+            padding: 10px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .middle-name-field {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .tables-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        .table-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .add-button {
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 14px;
+            width: 100%;
+        }
+        .delete-button {
+            background-color: #f2f2f2;
+            color: black;
+            border: 1px solid black;
+            cursor: pointer;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+        .middle-name-label {
+            display: inline-block;
+            margin-right: 10px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="middle-name-field">
+            <label for="middleName">Middle Name:</label>
+            <input type="text" id="middleName">
+            <button onclick="checkAndSave()">Submit</button>
+        </div>
+        <div class="input-field">
+            <button onclick="addNameEntry()">+ Add Name</button>
+            <button onclick="addDobEntry()">+ Add Date of Birth</button>
+        </div>
+        <div id="message"></div>
+        <div id="middleNameLabel" class="middle-name-label"></div>
+        <div class="tables-container">
+            <div class="table-container">
+                <table id="namesTable">
+                    <thead>
+                        <tr>
+                            <th>Last Name</th>
+                            <th>First Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="savedNames">
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-container">
+                <table id="dobTable">
+                    <thead>
+                        <tr>
+                            <th>Date of Birth</th>
+                            <th>Age</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="savedDOBs">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const nameEntries = new Set();
+        const dobEntries = new Set();
+        let isFirstEntry = true;
+
+        function formatDateString(dateString) {
+            const date = new Date(dateString);
+            const day = String(date.getUTCDate()).padStart(2, '0');
+            const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+            const year = date.getUTCFullYear();
+            return `${month}/${day}/${year}`;
+        }
+
+        function calculateAge(dateString) {
+            const birthDate = new Date(dateString);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age;
+        }
+
+        function isValidDate(dateString) {
+            const regex = /^(0[1-9]|1[0-2])[\/\-](0[1-9]|[12][0-9]|3[01])[\/\-](19|20)\d\d$/;
+            if (dateString.match(regex)) {
+                return true;
+            }
+            const compactRegex = /^(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])(19|20)\d\d$/;
+            return dateString.match(compactRegex) !== null;
+        }
+
+        function checkAndSave() {
+            const middleName = document.getElementById('middleName').value.trim().toUpperCase();
+
+            if (!middleName) {
+                document.getElementById('message').innerHTML = 'Middle name is required.';
+                document.getElementById('message').className = 'error';
+                return;
+            }
+
+            if (isFirstEntry && middleName) {
+                document.getElementById('middleNameLabel').innerHTML = `MN: ${middleName}`;
+                isFirstEntry = false;
+            }
+
+            document.getElementById('message').innerHTML = 'Entry saved successfully.';
+            document.getElementById('message').className = 'saved';
+            clearFields();
+        }
+
+        function clearFields() {
+            document.getElementById('middleName').value = '';
+        }
+
+        function addNameEntry() {
+            const lastName = prompt("Enter Last Name:").trim().toUpperCase();
+            const firstName = prompt("Enter First Name:").trim().toUpperCase();
+
+            if (!lastName || !firstName) {
+                alert("Both last name and first name are required.");
+                return;
+            }
+
+            const nameEntry = `${lastName} ${firstName}`.trim();
+
+            if (nameEntries.has(nameEntry.toLowerCase())) {
+                alert("Duplicate name entry!");
+                return;
+            }
+
+            const savedNamesList = document.getElementById('savedNames');
+            const nameRow = document.createElement('tr');
+            const lastNameCell = document.createElement('td');
+            lastNameCell.textContent = lastName;
+            const firstNameCell = document.createElement('td');
+            firstNameCell.textContent = firstName;
+            const deleteButtonCell = document.createElement('td');
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.className = 'delete-button';
+            deleteButton.onclick = () => deleteEntry(nameRow, nameEntry, 'name');
+            deleteButtonCell.appendChild(deleteButton);
+
+            nameRow.appendChild(lastNameCell);
+            nameRow.appendChild(firstNameCell);
+            nameRow.appendChild(deleteButtonCell);
+            savedNamesList.appendChild(nameRow);
+            nameEntries.add(nameEntry.toLowerCase());
+        }
+
+        function addDobEntry() {
+            const dob = prompt("Enter Date of Birth (MM/DD/YYYY, MM-DD-YYYY, or MMDDYYYY):").trim();
+
+            if (!dob) {
+                alert("Date of birth is required.");
+                return;
+            }
+
+            if (!isValidDate(dob)) {
+                alert("Invalid date format. Please enter date in MM/DD/YYYY, MM-DD-YYYY, or MMDDYYYY format.");
+                return;
+            }
+
+            let formattedDob = dob;
+            if (dob.includes('/') || dob.includes('-')) {
+                formattedDob = formatDateString(dob);
+            } else if (dob.length === 8) {
+                formattedDob = `${dob.slice(0, 2)}/${dob.slice(2, 4)}/${dob.slice(4)}`;
+            }
+
+            const dobEntry = formattedDob.trim();
+
+            if (dobEntries.has(dobEntry.toLowerCase())) {
+                alert("Duplicate date of birth entry!");
+                return;
+            }
+
+            const savedDOBsList = document.getElementById('savedDOBs');
+            const dobRow = document.createElement('tr');
+            const dobCell = document.createElement('td');
+            dobCell.textContent = formattedDob;
+            const ageCell = document.createElement('td');
+            const age = calculateAge(formattedDob);
+            ageCell.textContent = age;
+            if (age < 14) {
+                ageCell.style.backgroundColor = 'red';
+                ageCell.style.color = 'white';
+            } else {
+                ageCell.style.backgroundColor = 'green';
+                ageCell.style.color = 'white';
+            }
+            const deleteButtonCell = document.createElement('td');
+                        const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.className = 'delete-button';
+            deleteButton.onclick = () => deleteEntry(dobRow, dobEntry, 'dob');
+            deleteButtonCell.appendChild(deleteButton);
+
+            dobRow.appendChild(dobCell);
+            dobRow.appendChild(ageCell);
+            dobRow.appendChild(deleteButtonCell);
+            savedDOBsList.appendChild(dobRow);
+            dobEntries.add(dobEntry.toLowerCase());
+        }
+
+        function deleteEntry(row, entry, type) {
+            if (type === 'name') {
+                nameEntries.delete(entry.toLowerCase());
+            } else if (type === 'dob') {
+                dobEntries.delete(entry.toLowerCase());
+            }
+            row.remove();
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
